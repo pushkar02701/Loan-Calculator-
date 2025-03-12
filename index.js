@@ -1,15 +1,34 @@
 function calculateLoan() {
-    loanAmountValue = document.getElementById("loan-amount").value;
+	// Get input values
+	const loanAmount = parseFloat(
+		document.querySelector(".loan-amount").value
+	);
+	const interestRate = parseFloat(
+		document.querySelector(".interest-rate").value
+	);
+	const monthsToPay = parseFloat(
+		document.querySelector(".months-to-pay").value
+	);
+
+	// Validate inputs
+	if (isNaN(loanAmount) || isNaN(interestRate) || isNaN(monthsToPay)) {
+		alert("Please enter valid numbers for all fields.");
+		return;
+	}
+
+	// Calculate monthly interest and payment
+	const monthlyInterestRate = interestRate / 100 / 12;
+	const numerator =
+		loanAmount *
+		monthlyInterestRate *
+		Math.pow(1 + monthlyInterestRate, monthsToPay);
+	const denominator = Math.pow(1 + monthlyInterestRate, monthsToPay) - 1;
+	const monthlyPayment = (numerator / denominator).toFixed(2);
+
+  console.log(monthlyPayment);
   
-    interestRateValue = document.getElementById("interest-rate").value;
-  
-    MonthsToPayValue = document.getElementById("months-to-pay").value;
-  
-    interest = (loanAmountValue * (interestRateValue * 0.01)) / MonthsToPayValue;
-  
-    monthlyPayment = (loanAmountValue / MonthsToPayValue + interest).toFixed(2);
-  
-    document.getElementById(
-      "payment"
-    ).innerHTML = `Monthly Payment: ${monthlyPayment}`;
-  }
+	// Display the result
+	document.querySelector(
+		".payment"
+	).innerHTML = `Monthly Payment: $${monthlyPayment}`;
+}
